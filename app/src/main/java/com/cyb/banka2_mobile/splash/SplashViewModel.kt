@@ -32,7 +32,7 @@ class SplashViewModel @Inject constructor(
 
     private fun simulateSplashDelay() {
         viewModelScope.launch {
-            delay(4000) // 2.5 sekunde
+            delay(4000)
             setState { copy(loading = false) }
         }
     }
