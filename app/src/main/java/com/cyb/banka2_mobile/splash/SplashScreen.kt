@@ -99,7 +99,6 @@ fun SplashScreen(
                 SingleRunProgressBar()
             }
         }
-    } else {
     }
 }
 
