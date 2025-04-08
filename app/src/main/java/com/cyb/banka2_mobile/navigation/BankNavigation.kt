@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.cyb.banka2_mobile.home.home
 import com.cyb.banka2_mobile.login.login
 import com.cyb.banka2_mobile.splash.splash
 
@@ -36,6 +37,10 @@ fun BankNavigation() {
             onUserClick = {
                 navController.navigate(route = "home")
             }
+        )
+
+        home(
+            route = "home"
         )
     }
 }

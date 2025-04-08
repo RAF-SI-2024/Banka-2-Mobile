@@ -63,6 +63,8 @@ fun LoginScreen(
     eventPublisher: (uiEvent: LoginContract.LoginEvent) -> Unit,
     onUserClick: () -> Unit
 ) {
+    if (state.navigateToHome)
+        onUserClick()
     Box(
         modifier = Modifier
             .fillMaxSize()

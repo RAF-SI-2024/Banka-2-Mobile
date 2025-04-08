@@ -3,6 +3,7 @@ package com.cyb.banka2_mobile.splash
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cyb.banka2_mobile.login.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,12 +15,13 @@ import javax.inject.Inject
 @Immutable
 data class SplashState(
     val loading: Boolean = true,
-    val goToLogin: Boolean = false
+    val goToLogin: Boolean = false,
+    val goToHome: Boolean = false
 )
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-
+    private val loginRepository: LoginRepository
 ): ViewModel() {
     private val _state = MutableStateFlow(SplashState())
     val state = _state.asStateFlow()
@@ -29,6 +31,21 @@ class SplashViewModel @Inject constructor(
 
     init {
         simulateSplashDelay()
+        checkIfUserExists()
+    }
+
+    private fun checkIfUserExists() {
+        viewModelScope.launch {
+            val response = loginRepository.getUser()
+
+            println("Jovan ${response.token}")
+            setState {
+                copy(
+                    goToHome = response.token.isNotEmpty(),
+                    goToLogin = response.token.isEmpty()
+                )
+            }
+        }
     }
 
     private fun simulateSplashDelay() {

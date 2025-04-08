@@ -62,6 +62,13 @@ fun SplashScreen(
                 .background(Color(0xFF0F1120))
         )
         navigateTo("login")
+    }else if (state.goToHome) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF0F1120))
+        )
+        navigateTo("home")
     } else if (state.loading) {
         Box(
             modifier = Modifier

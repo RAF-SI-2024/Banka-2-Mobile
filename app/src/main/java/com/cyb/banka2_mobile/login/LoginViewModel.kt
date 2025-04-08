@@ -29,20 +29,8 @@ class LoginViewModel @Inject constructor(
     fun setEvent(event: LoginContract.LoginEvent) = viewModelScope.launch { events.emit(event) }
 
     init {
-//        checkIfUserExists()
         observeEvents()
     }
-
-
-//    private fun checkIfUserExists() {
-//        viewModelScope.launch {
-//            val response = loginRepository.getUser()
-//
-//            if (response.token.isNotEmpty()){
-//                setState {  }
-//            }
-//        }
-//    }
 
     private fun observeEvents() {
         viewModelScope.launch {
@@ -56,7 +44,7 @@ class LoginViewModel @Inject constructor(
                         )
 
                         if (isLoggedIn) {
-                            // todo navigate to home
+                            setState { copy(navigateToHome = true) }
                         } else {
                             setState { copy(raiseError = true) }
                         }

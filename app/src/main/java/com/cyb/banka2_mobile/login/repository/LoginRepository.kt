@@ -23,6 +23,10 @@ class LoginRepository @Inject constructor(
     }
 
     suspend fun getUser(): UserUiModel {
-        return database.userDao().getUser()[0].toUiModel()
+        val response = database.userDao().getUser()
+
+        if (response.isNotEmpty())
+            return response[0].toUiModel()
+        return UserUiModel(firstName = "", lastName = "", token = "")
     }
 }

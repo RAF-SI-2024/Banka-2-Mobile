@@ -10,7 +10,8 @@ interface LoginContract {
         val emailFieldEmpty: Boolean = false,
         val passwordFieldEmpty: Boolean = false,
         val passwordFieldVisible: Boolean = false,
-        val raiseError: Boolean = false
+        val raiseError: Boolean = false,
+        val navigateToHome: Boolean = false
     )
 
     sealed class LoginEvent {
