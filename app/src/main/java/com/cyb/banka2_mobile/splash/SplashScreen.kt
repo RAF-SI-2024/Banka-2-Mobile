@@ -33,6 +33,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.cyb.banka2_mobile.R
 import com.cyb.banka2_mobile.ui.theme.EnableEdgeToEdge
+import kotlinx.coroutines.delay
 
 fun NavGraphBuilder.splash(
     route: String,
@@ -54,7 +55,14 @@ fun SplashScreen(
     state: SplashState,
     navigateTo: (String) -> Unit
 ) {
-    if (state.loading) {
+    if (state.goToLogin) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF0F1120))
+        )
+        navigateTo("login")
+    } else if (state.loading) {
         Box(
             modifier = Modifier
                 .fillMaxSize()

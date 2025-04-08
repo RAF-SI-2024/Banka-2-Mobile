@@ -39,7 +39,7 @@ object NetworkingModule {
         okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://localhost:3031/api/v1")
+            .baseUrl("http://10.0.2.2:3031/api/v1/")
             .client(okHttpClient)
             .addConverterFactory(AppJson.asConverterFactory("application/json".toMediaType()))
             .build()

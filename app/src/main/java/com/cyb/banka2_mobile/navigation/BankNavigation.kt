@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.cyb.banka2_mobile.login.login
 import com.cyb.banka2_mobile.splash.splash
 
 @Composable
@@ -23,7 +24,17 @@ fun BankNavigation() {
         splash(
             route = "splash",
             navigateTo = {
-                // todo add logic for navigation to login or home based on param
+                if (it == "login")
+                    navController.navigate(route = "login")
+                else
+                    navController.navigate(route = "home")
+            }
+        )
+
+        login(
+            route = "login",
+            onUserClick = {
+                navController.navigate(route = "home")
             }
         )
     }
