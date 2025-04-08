@@ -33,7 +33,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.cyb.banka2_mobile.R
 import com.cyb.banka2_mobile.ui.theme.EnableEdgeToEdge
-import kotlinx.coroutines.delay
 
 fun NavGraphBuilder.splash(
     route: String,

@@ -4,7 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.cyb.banka2_mobile.login.di.UserDao
 import com.cyb.banka2_mobile.login.model.UserEntity
-import com.cyb.banka2_mobile.splash.DemoEntity
 
 @Database(
     entities = [
