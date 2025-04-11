@@ -31,11 +31,12 @@ class SplashViewModel @Inject constructor(
 
     init {
         simulateSplashDelay()
-        checkIfUserExists()
     }
 
     private fun checkIfUserExists() {
         viewModelScope.launch {
+            delay(4000)
+            loginRepository.delete()
             val response = loginRepository.getUser()
 
             println("Jovan ${response.token}")

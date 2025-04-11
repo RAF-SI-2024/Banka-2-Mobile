@@ -21,7 +21,7 @@ data class UserDto(
     val phoneNumber: String,
     val address: String,
     val role: Int,
-    val department: String,
+    val department: String?,
     val accounts: List<AccountDto>,
     val createdAt: String,
     val modifiedAt: String,

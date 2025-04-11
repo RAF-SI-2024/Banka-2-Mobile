@@ -29,4 +29,8 @@ class LoginRepository @Inject constructor(
             return response[0].toUiModel()
         return UserUiModel(firstName = "", lastName = "", token = "")
     }
+
+    suspend fun delete() {
+        database.userDao().clearUsers()
+    }
 }
