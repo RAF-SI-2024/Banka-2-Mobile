@@ -1,4 +1,4 @@
-package com.cyb.banka2_mobile.home
+package com.cyb.banka2_mobile.home.top_screen_card
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -34,6 +34,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.cyb.banka2_mobile.R
+import com.cyb.banka2_mobile.home.HomeContract
+import com.cyb.banka2_mobile.home.HomeViewModel
 import com.cyb.banka2_mobile.ui.theme.EnableEdgeToEdge
 
 fun NavGraphBuilder.home(
