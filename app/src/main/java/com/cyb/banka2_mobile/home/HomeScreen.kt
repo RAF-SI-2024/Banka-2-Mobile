@@ -1,12 +1,28 @@
 package com.cyb.banka2_mobile.home
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
@@ -44,6 +60,7 @@ fun NavGraphBuilder.home(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(
     state: HomeContract.HomeState,
@@ -51,61 +68,83 @@ fun HomeScreen(
 ) {
     Scaffold(
         containerColor = Color(0xFF0F1120),
-        topBar = {}
+        topBar = {},
+        contentWindowInsets = WindowInsets.systemBars
     ) { padding ->
-        if (state.loading) {
-            ShimmerContent(padding)
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(padding)
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
-            ) {
-                TopScreenCard(
-                    state = state,
+
+        AnimatedContent(
+            targetState = state.loading,
+            transitionSpec = {
+                (slideInVertically(
+                    animationSpec = tween(durationMillis = 500),
+                    initialOffsetY = { fullHeight -> fullHeight / 4 }
+                ) + fadeIn(animationSpec = tween(500)) + scaleIn(
+                    initialScale = 0.95f,
+                    animationSpec = tween(500)
+                )) with
+                        (fadeOut(animationSpec = tween(300)) + scaleOut(
+                            targetScale = 1.05f,
+                            animationSpec = tween(300)
+                        ))
+            },
+            label = "HomeContentTransition"
+        ) { isLoading ->
+            if (isLoading) {
+                ShimmerContent(padding)
+            } else {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                if (state.cards.isNotEmpty()) {
-                    AccountCardsSection(state.cards)
+                        .fillMaxSize()
+                        .consumeWindowInsets(padding)
+                        .verticalScroll(rememberScrollState())
+                        .padding(padding)
+                        .padding(horizontal = 24.dp)
+                ) {
+                    TopScreenCard(
+                        state = state,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    TransferAndQrActions()
-                }
+                    if (state.cards.isNotEmpty()) {
+                        AccountCardsSection(state.cards)
 
-                Spacer(modifier = Modifier.height(32.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
 
-                Text(
-                    text = "Transactions",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-
-                if (state.transactions.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "No transactions available",
-                            color = Color.Gray,
-                            fontSize = 14.sp
-                        )
+                        TransferAndQrActions()
                     }
-                } else {
-                    TransactionList(state.transactions)
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Text(
+                        text = "Transactions",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    if (state.transactions.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "No transactions available",
+                                color = Color.Gray,
+                                fontSize = 14.sp
+                            )
+                        }
+                    } else {
+                        TransactionList(state.transactions)
+                    }
                 }
             }
         }
     }
 }
+

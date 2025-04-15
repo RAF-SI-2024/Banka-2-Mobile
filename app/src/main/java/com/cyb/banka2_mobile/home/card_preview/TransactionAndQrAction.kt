@@ -81,7 +81,7 @@ fun ActionButton(
             .height(48.dp)
     ) {
         Icon(icon, contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(14.dp))
         Text(text)
     }
 }
