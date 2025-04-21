@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.turingcomplete.kotlinonetimepassword.HmacAlgorithm
 import dev.turingcomplete.kotlinonetimepassword.TimeBasedOneTimePasswordConfig
 import dev.turingcomplete.kotlinonetimepassword.TimeBasedOneTimePasswordGenerator
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,27 +18,35 @@ import javax.inject.Inject
 @HiltViewModel
 class TotpViewModel @Inject constructor(
     private val loginRepository: LoginRepository
-): ViewModel() {
+) : ViewModel() {
+
     private val _state = MutableStateFlow(TotpContract.TotpState())
     val state = _state.asStateFlow()
 
-    private fun setState(reducer: TotpContract.TotpState.() -> TotpContract.TotpState) = _state.update (reducer)
+    private fun setState(reducer: TotpContract.TotpState.() -> TotpContract.TotpState) =
+        _state.update(reducer)
 
     init {
         viewModelScope.launch {
-            generateTotp()
+            while (true) {
+                generateTotp()
+                delay(30_000)
+            }
         }
     }
 
     private suspend fun generateTotp() {
-//        val secret = loginRepository.getUser().id
+        // val secret = loginRepository.getUser().id
         val secret = "0be15ed6-db15-4605-898c-6a843fbc604b"
-        val config = TimeBasedOneTimePasswordConfig(codeDigits = 6,
+        val config = TimeBasedOneTimePasswordConfig(
+            codeDigits = 6,
             hmacAlgorithm = HmacAlgorithm.SHA256,
             timeStep = 30,
-            timeStepUnit = TimeUnit.SECONDS)
+            timeStepUnit = TimeUnit.SECONDS
+        )
         val timeBasedOneTimePasswordGenerator = TimeBasedOneTimePasswordGenerator(secret.toByteArray(), config)
 
-        var code0: String = timeBasedOneTimePasswordGenerator.generate()
+        val code: String = timeBasedOneTimePasswordGenerator.generate()
+        setState { copy(totp = code) }
     }
 }
