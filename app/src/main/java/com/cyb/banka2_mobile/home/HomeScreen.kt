@@ -113,7 +113,7 @@ fun HomeScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        TransferAndQrActions()
+//                        TransferAndQrActions()
                     }
 
                     Spacer(modifier = Modifier.height(32.dp))

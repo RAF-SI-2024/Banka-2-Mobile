@@ -10,13 +10,14 @@ import androidx.navigation.compose.rememberNavController
 import com.cyb.banka2_mobile.home.home
 import com.cyb.banka2_mobile.login.login
 import com.cyb.banka2_mobile.splash.splash
+import com.cyb.banka2_mobile.totp.totp
 
 @Composable
 fun BankNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "splash",
+        startDestination = "totp",
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { scaleOut(targetScale = 0.8f)  },
         popExitTransition = { slideOutHorizontally { it } },
@@ -41,6 +42,13 @@ fun BankNavigation() {
 
         home(
             route = "home"
+        )
+
+        totp(
+            route = "totp",
+            onNavigate = {
+                // todo
+            }
         )
     }
 }
