@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.cyb.banka2_mobile.exchange.exchange
 import com.cyb.banka2_mobile.home.home
+import com.cyb.banka2_mobile.loans.loans
 import com.cyb.banka2_mobile.login.login
 import com.cyb.banka2_mobile.splash.splash
 import com.cyb.banka2_mobile.totp.totp
@@ -57,6 +58,13 @@ fun BankNavigation() {
 
         exchange(
             route = "exchange",
+            onNavigate = {
+                navController.navigate(route = it)
+            }
+        )
+
+        loans(
+            route = "loans",
             onNavigate = {
                 navController.navigate(route = it)
             }
