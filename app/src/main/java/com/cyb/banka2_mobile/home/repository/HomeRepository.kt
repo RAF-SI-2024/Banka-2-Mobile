@@ -24,6 +24,7 @@ class HomeRepository @Inject constructor(
 
     suspend fun getCards(userId: String): List<CardUiModel>? {
         val response = cardApi.getCardsForUser(id = userId)
+        println("Raw JSON: ${response.body().toString()}")
 
         if (response.isSuccessful)
             return response.body()?.toUiModel()

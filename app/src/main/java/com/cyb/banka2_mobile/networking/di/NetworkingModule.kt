@@ -22,6 +22,7 @@ object NetworkingModule {
             .addInterceptor{
                 val updateRequest = it.request().newBuilder()
                     .addHeader("CustomHeader", "CustomValue")
+                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDYxMjQxMjQsImlkIjoiYjVkMzZjMjItM2I2Yy00ZGUwLTg0NWItYTFhNzRlN2I5ODU2IiwicGVybWlzc2lvbnMiOiIxIiwiaWF0IjoxNzQ1NTg0MTI0LCJuYmYiOjE3NDU1ODQxMjR9.cbeHFaWxzGz1zqOtghAPAFs2eX6fXZr0ZucKNkzMz0k")
                     .build()
                 it.proceed(updateRequest)
             }

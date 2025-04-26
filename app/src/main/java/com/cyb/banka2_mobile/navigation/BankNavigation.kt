@@ -17,7 +17,7 @@ fun BankNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "totp",
+        startDestination = "splash",
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { scaleOut(targetScale = 0.8f)  },
         popExitTransition = { slideOutHorizontally { it } },
@@ -41,13 +41,16 @@ fun BankNavigation() {
         )
 
         home(
-            route = "home"
+            route = "home",
+            onNavigate = {
+                navController.navigate(route = it)
+            }
         )
 
         totp(
             route = "totp",
             onNavigate = {
-                // todo
+                navController.navigate(route = it)
             }
         )
     }

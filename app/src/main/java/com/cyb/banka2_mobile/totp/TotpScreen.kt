@@ -20,6 +20,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.cyb.banka2_mobile.home.HomeContract
 import com.cyb.banka2_mobile.ui.theme.EnableEdgeToEdge
 import kotlin.math.roundToInt
 
@@ -57,6 +61,9 @@ fun NavGraphBuilder.totp(
     EnableEdgeToEdge()
     TotpScreen(
         state = state.value,
+        eventPublisher = {
+            totpViewModel.setEvent(it)
+        },
         onNavigate = onNavigate
     )
 }
@@ -64,6 +71,7 @@ fun NavGraphBuilder.totp(
 @Composable
 fun TotpScreen(
     state: TotpContract.TotpState,
+    eventPublisher: (uiEvent: TotpContract.TotpEvent) -> Unit,
     onNavigate: (String) -> Unit
 ) {
     val animatedProgress = remember { Animatable(0f) }
@@ -97,6 +105,30 @@ fun TotpScreen(
     Scaffold(
         containerColor = Color(0xFF0F1120),
         topBar = {},
+        bottomBar = {
+            NavigationBar {
+                state.navigationItems.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = state.selectedItemNavigationIndex == index,
+                        onClick = {
+                            eventPublisher(TotpContract.TotpEvent.SelectedNavigationIndex(index))
+                            when (index) {
+                                0 -> onNavigate("home")
+                                2 -> onNavigate("exchange")
+                                3 -> onNavigate("loans")
+                            }
+                        },
+                        icon = {
+                            Icon(imageVector = if (index == state.selectedItemNavigationIndex) {
+                                item.selectedIcon
+                            } else item.unselectedIcon,
+                                contentDescription = item.title)
+                        }
+                    )
+
+                }
+            }
+        },
         contentWindowInsets = WindowInsets.systemBars
     ) { paddingValues ->
         Box(

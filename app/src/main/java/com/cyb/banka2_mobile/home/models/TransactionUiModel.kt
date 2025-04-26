@@ -10,6 +10,6 @@ data class TransactionUiModel(
     val codeName: String,
     val referenceNumber: String,
     val purpose: String,
-    val status: String,
+    val status: Int,
     val createdAt: String
 )

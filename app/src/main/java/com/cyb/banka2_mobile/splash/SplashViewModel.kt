@@ -39,7 +39,6 @@ class SplashViewModel @Inject constructor(
             loginRepository.delete()
             val response = loginRepository.getUser()
 
-            println("Jovan ${response.token}")
             setState {
                 copy(
                     goToHome = response.token.isNotEmpty(),

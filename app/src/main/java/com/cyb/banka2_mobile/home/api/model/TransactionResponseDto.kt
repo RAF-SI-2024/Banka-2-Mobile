@@ -22,7 +22,7 @@ data class TransactionDto(
     val code: TransactionCodeDto,
     val referenceNumber: String,
     val purpose: String,
-    val status: String,
+    val status: Int,
     val createdAt: String,
     val modifiedAt: String
 )

@@ -1,5 +1,3 @@
-package com.cyb.banka2_mobile.home.card_preview
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,14 +20,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cyb.banka2_mobile.home.models.AccountUiModel
 import com.cyb.banka2_mobile.home.models.TransactionUiModel
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun TransactionList(transactions: List<TransactionUiModel>) {
+fun TransactionList(
+    transactionsByAccount: Map<String, List<TransactionUiModel>>,
+    selectedAccount: AccountUiModel?
+) {
+    val selectedTransactions = selectedAccount?.let { account ->
+        transactionsByAccount[account.accountId]
+    }.orEmpty()
+
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        transactions.forEach { tx ->
+        selectedTransactions.forEach { tx ->
             TransactionItem(tx)
         }
     }
@@ -37,7 +43,7 @@ fun TransactionList(transactions: List<TransactionUiModel>) {
 
 @Composable
 fun TransactionItem(tx: TransactionUiModel) {
-    val amountColor = if (tx.status == "Success") Color(0xFF81C784) else Color(0xFFE57373)
+    val amountColor = if (tx.status == 5) Color(0xFF81C784) else Color(0xFFE57373)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
