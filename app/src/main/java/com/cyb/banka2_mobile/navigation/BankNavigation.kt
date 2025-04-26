@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.cyb.banka2_mobile.exchange.exchange
 import com.cyb.banka2_mobile.home.home
 import com.cyb.banka2_mobile.login.login
 import com.cyb.banka2_mobile.splash.splash
@@ -49,6 +50,13 @@ fun BankNavigation() {
 
         totp(
             route = "totp",
+            onNavigate = {
+                navController.navigate(route = it)
+            }
+        )
+
+        exchange(
+            route = "exchange",
             onNavigate = {
                 navController.navigate(route = it)
             }
