@@ -92,13 +92,14 @@ fun HomeScreen(
                             }
                         },
                         icon = {
-                            Icon(imageVector = if (index == state.selectedItemNavigationIndex) {
-                                item.selectedIcon
-                            } else item.unselectedIcon,
-                                contentDescription = item.title)
+                            Icon(
+                                imageVector = if (index == state.selectedItemNavigationIndex) {
+                                    item.selectedIcon
+                                } else item.unselectedIcon,
+                                contentDescription = item.title
+                            )
                         }
                     )
-
                 }
             }
         },
@@ -123,6 +124,8 @@ fun HomeScreen(
         ) { isLoading ->
             if (isLoading) {
                 ShimmerContent(padding)
+            } else if(state.navigateToLogin) {
+                onNavigate("login")
             } else {
                 Column(
                     modifier = Modifier
@@ -136,6 +139,14 @@ fun HomeScreen(
                         state = state,
                         modifier = Modifier
                             .fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    SignOutButton(
+                        onSignOutClicked = {
+                            eventPublisher(HomeContract.HomeEvent.SingOut)
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -187,3 +198,18 @@ fun HomeScreen(
     }
 }
 
+@Composable
+fun SignOutButton(onSignOutClicked: () -> Unit) {
+    androidx.compose.material3.Button(
+        onClick = onSignOutClicked,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+    ) {
+        Text(
+            text = "Sign Out",
+            color = Color.Gray,
+            fontSize = 16.sp
+        )
+    }
+}

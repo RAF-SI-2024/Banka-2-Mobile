@@ -101,8 +101,19 @@ class HomeViewModel @Inject constructor(
                     is HomeContract.HomeEvent.SelectedNavigationIndex -> {
                         setState { copy(selectedItemNavigationIndex = event.index) }
                     }
+
+                    HomeContract.HomeEvent.SingOut -> {
+                        doLogOut()
+                    }
                 }
             }
+        }
+    }
+
+    private fun doLogOut() {
+        viewModelScope.launch {
+            loginRepository.delete()
+            setState { copy(navigateToLogin = true) }
         }
     }
 

@@ -16,10 +16,12 @@ interface HomeContract {
         val selectedAccount: AccountUiModel? = null,
         val navigationItems: List<BottomNavigationItem> = emptyList(),
         val selectedItemNavigationIndex: Int = 0,
+        val navigateToLogin: Boolean = false
     )
 
     sealed class HomeEvent{
         data class SelectCard(val account: AccountUiModel): HomeEvent()
+        data object SingOut: HomeEvent()
         data class SelectedNavigationIndex(val index: Int): HomeEvent()
     }
 }
