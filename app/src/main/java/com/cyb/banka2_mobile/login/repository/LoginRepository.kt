@@ -27,7 +27,7 @@ class LoginRepository @Inject constructor(
 
         if (response.isNotEmpty())
             return response[0].toUiModel()
-        return UserUiModel(firstName = "", lastName = "", token = "")
+        return UserUiModel(firstName = "", lastName = "", token = "", id = "")
     }
 
     suspend fun delete() {

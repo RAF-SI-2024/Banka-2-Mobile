@@ -17,13 +17,20 @@ import javax.inject.Singleton
 object NetworkingModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        tokenProvider: TokenProvider,
+    ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor{
-                val updateRequest = it.request().newBuilder()
+            .addInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
                     .addHeader("CustomHeader", "CustomValue")
-                    .build()
-                it.proceed(updateRequest)
+
+                tokenProvider.getToken()?.let { token ->
+                    println("Jovan token: $token")
+                    requestBuilder.addHeader("Authorization", "Bearer $token")
+                }
+
+                chain.proceed(requestBuilder.build())
             }
             .addInterceptor(
                 HttpLoggingInterceptor().apply {

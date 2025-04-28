@@ -6,6 +6,7 @@ import com.cyb.banka2_mobile.login.model.UserUiModel
 
 fun LoginResponse.toDbModel(): UserEntity {
     return UserEntity(
+        id = user.id,
         token = token,
         address = user.address,
         firstName = user.firstName,
@@ -20,6 +21,7 @@ fun LoginResponse.toDbModel(): UserEntity {
 
 fun UserEntity.toUiModel(): UserUiModel {
     return UserUiModel(
+        id = id,
         firstName = firstName,
         lastName = lastName,
         token = token
