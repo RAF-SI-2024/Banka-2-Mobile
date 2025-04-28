@@ -1,30 +1,17 @@
 package com.cyb.banka2_mobile.home
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Share
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cyb.banka2_mobile.home.models.AccountUiModel
-import com.cyb.banka2_mobile.home.models.TransactionUiModel
 import com.cyb.banka2_mobile.home.repository.HomeRepository
-import com.cyb.banka2_mobile.login.LoginContract.LoginEvent.DoLogin
-import com.cyb.banka2_mobile.login.LoginContract.LoginEvent.EmailFieldChange
-import com.cyb.banka2_mobile.login.LoginContract.LoginEvent.PasswordFieldChange
-import com.cyb.banka2_mobile.login.LoginContract.LoginEvent.SwitchPasswordVisibility
-import com.cyb.banka2_mobile.login.api.model.LoginRequest
 import com.cyb.banka2_mobile.login.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -34,7 +21,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.cyb.banka2_mobile.home.models.CardUiModel as CardUiModel1
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(

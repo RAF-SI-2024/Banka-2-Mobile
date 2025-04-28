@@ -8,6 +8,7 @@ import com.cyb.banka2_mobile.login.LoginContract.LoginEvent.PasswordFieldChange
 import com.cyb.banka2_mobile.login.LoginContract.LoginEvent.SwitchPasswordVisibility
 import com.cyb.banka2_mobile.login.api.model.LoginRequest
 import com.cyb.banka2_mobile.login.repository.LoginRepository
+import com.cyb.banka2_mobile.networking.di.TokenProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val tokenProvider: TokenProvider
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginContract.LoginState())
     val state = _state.asStateFlow()
@@ -44,6 +46,8 @@ class LoginViewModel @Inject constructor(
                         )
 
                         if (isLoggedIn) {
+                            val token = loginRepository.getUser().token
+                            tokenProvider.setToken(token)
                             setState { copy(navigateToHome = true) }
                         } else {
                             setState { copy(raiseError = true) }

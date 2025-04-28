@@ -86,8 +86,7 @@ class TotpViewModel @Inject constructor(
     }
 
     private suspend fun generateTotp() {
-        // val secret = loginRepository.getUser().id
-        val secret = "0be15ed6-db15-4605-898c-6a843fbc604b"
+        val secret = loginRepository.getUser().id
         val config = TimeBasedOneTimePasswordConfig(
             codeDigits = 6,
             hmacAlgorithm = HmacAlgorithm.SHA256,

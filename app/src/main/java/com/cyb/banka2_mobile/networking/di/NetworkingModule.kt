@@ -17,14 +17,20 @@ import javax.inject.Singleton
 object NetworkingModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        tokenProvider: TokenProvider,
+    ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor{
-                val updateRequest = it.request().newBuilder()
+            .addInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
                     .addHeader("CustomHeader", "CustomValue")
-                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDYxMjQxMjQsImlkIjoiYjVkMzZjMjItM2I2Yy00ZGUwLTg0NWItYTFhNzRlN2I5ODU2IiwicGVybWlzc2lvbnMiOiIxIiwiaWF0IjoxNzQ1NTg0MTI0LCJuYmYiOjE3NDU1ODQxMjR9.cbeHFaWxzGz1zqOtghAPAFs2eX6fXZr0ZucKNkzMz0k")
-                    .build()
-                it.proceed(updateRequest)
+
+                tokenProvider.getToken()?.let { token ->
+                    println("Jovan token: $token")
+                    requestBuilder.addHeader("Authorization", "Bearer $token")
+                }
+
+                chain.proceed(requestBuilder.build())
             }
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
