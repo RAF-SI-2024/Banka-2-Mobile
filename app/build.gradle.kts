@@ -114,5 +114,9 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 
+    // Placeholders
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.34.0")
 
+    // TOTP
+    implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.1")
 }

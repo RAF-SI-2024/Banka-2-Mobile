@@ -35,11 +35,8 @@ class SplashViewModel @Inject constructor(
 
     private fun checkIfUserExists() {
         viewModelScope.launch {
-            delay(4000)
-            loginRepository.delete()
             val response = loginRepository.getUser()
 
-            println("Jovan ${response.token}")
             setState {
                 copy(
                     goToHome = response.token.isNotEmpty(),
@@ -52,8 +49,8 @@ class SplashViewModel @Inject constructor(
     private fun simulateSplashDelay() {
         viewModelScope.launch {
             delay(4000)
+            checkIfUserExists()
             setState { copy(loading = false, goToLogin = true) }
-            // todo logic for navigation
         }
     }
 }
