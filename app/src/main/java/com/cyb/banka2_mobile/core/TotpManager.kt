@@ -53,11 +53,9 @@ class TotpManager @Inject constructor(
 
                         _totpState.value = TotpInfo(code, secondsLeft)
                     } catch (e: Exception) {
-                        // Ako je id nevalidan UUID, preskoči generisanje
                         _totpState.value = TotpInfo("", 30)
                     }
                 } else {
-                    // Ako nema secreta, ne generiši kod
                     _totpState.value = TotpInfo("", 30)
                 }
 
