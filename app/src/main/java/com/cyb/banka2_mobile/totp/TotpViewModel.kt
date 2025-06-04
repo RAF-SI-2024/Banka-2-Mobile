@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Menu
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cyb.banka2_mobile.core.TotpManager
 import com.cyb.banka2_mobile.home.BottomNavigationItem
 import com.cyb.banka2_mobile.login.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +29,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TotpViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val totpManager: TotpManager
 ) : ViewModel() {
+
+    val totpState = totpManager.totpState
 
     private val _state = MutableStateFlow(TotpContract.TotpState())
     val state = _state.asStateFlow()

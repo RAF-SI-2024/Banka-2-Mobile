@@ -46,9 +46,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.cyb.banka2_mobile.home.HomeContract
+import com.cyb.banka2_mobile.core.TotpManager
 import com.cyb.banka2_mobile.ui.theme.EnableEdgeToEdge
-import kotlin.math.roundToInt
 
 fun NavGraphBuilder.totp(
     route: String,
@@ -57,24 +56,25 @@ fun NavGraphBuilder.totp(
     route = route
 ) {
     val totpViewModel = hiltViewModel<TotpViewModel>()
+    val totpState by totpViewModel.totpState.collectAsState()
     val state = totpViewModel.state.collectAsState()
     EnableEdgeToEdge()
     TotpScreen(
         state = state.value,
+        totpState = totpState,
         eventPublisher = {
             totpViewModel.setEvent(it)
         },
         onNavigate = onNavigate
     )
 }
-
 @Composable
 fun TotpScreen(
     state: TotpContract.TotpState,
+    totpState: TotpManager.TotpInfo,
     eventPublisher: (uiEvent: TotpContract.TotpEvent) -> Unit,
     onNavigate: (String) -> Unit
 ) {
-    val animatedProgress = remember { Animatable(0f) }
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val glowAlpha by infiniteTransition.animateFloat(
         initialValue = 0.4f,
@@ -88,19 +88,23 @@ fun TotpScreen(
 
     val gradientColors = listOf(Color(0xFF5B5FEF), Color(0xFF7F83F7))
 
-    val timeLeft = remember(animatedProgress.value) {
-        ((1f - animatedProgress.value) * 30).roundToInt()
+    val animatedProgress = remember { Animatable(0f) }
+
+    val initialProgress = 1f - (totpState.secondsLeft / 30f)
+    val timeLeft = totpState.secondsLeft
+
+    LaunchedEffect(totpState.totp) {
+        animatedProgress.snapTo(initialProgress)
+        animatedProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(
+                durationMillis = (totpState.secondsLeft * 1000),
+                easing = LinearEasing
+            )
+        )
     }
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            animatedProgress.animateTo(
-                targetValue = 1f,
-                animationSpec = tween(durationMillis = 30_000, easing = LinearEasing)
-            )
-            animatedProgress.snapTo(0f)
-        }
-    }
+    val progress by animatedProgress.asState()
 
     Scaffold(
         containerColor = Color(0xFF0F1120),
@@ -119,13 +123,14 @@ fun TotpScreen(
                             }
                         },
                         icon = {
-                            Icon(imageVector = if (index == state.selectedItemNavigationIndex) {
-                                item.selectedIcon
-                            } else item.unselectedIcon,
-                                contentDescription = item.title)
+                            Icon(
+                                imageVector = if (index == state.selectedItemNavigationIndex) {
+                                    item.selectedIcon
+                                } else item.unselectedIcon,
+                                contentDescription = item.title
+                            )
                         }
                     )
-
                 }
             }
         },
@@ -178,7 +183,7 @@ fun TotpScreen(
                         drawArc(
                             brush = Brush.sweepGradient(gradientColors),
                             startAngle = -90f,
-                            sweepAngle = 360 * animatedProgress.value,
+                            sweepAngle = 360 * progress,
                             useCenter = false,
                             style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
                         )
@@ -190,7 +195,7 @@ fun TotpScreen(
                     }
 
                     Text(
-                        text = state.totp.chunked(3).joinToString("-"),
+                        text = totpState.totp.chunked(3).joinToString("-"),
                         color = Color.White,
                         fontSize = 42.sp,
                         fontFamily = FontFamily.Monospace,
